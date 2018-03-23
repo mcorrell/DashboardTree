@@ -68,7 +68,7 @@ var makeDistMatrix = function(data){
   var matrix = [];
   for(var i = 0;i<data.length;i++){
     matrix.push([]);
-    matrix[i].node = {"name": data[i].DB, "children": null};
+    matrix[i].node = {"name": data[i].DB, "string": data[i].String, "children": null};
     for(var j=0;j<data.length;j++){
       matrix[i][j] = hamming(data[i].String,data[j].String);
     }
@@ -179,30 +179,36 @@ d3.csv("data.csv", function(error, data) {
     .attr("x",8)
     .attr("y",-0.5*imgsize)
     .on("mouseover",function(d){
-      d3.select(this)
+      var item = d3.select(this);
+      item
         .attr("width",imgsizeBig)
         .attr("height",imgsizeBig)
         .attr("y",-0.5*imgsizeBig);
+
+      d3.selectAll("text").filter(d => item.datum().data.name == d.data.name).attr("visibility",null);
+
     })
     .on("mouseout",function(d){
-      d3.select(this)
+      var item = d3.select(this);
+      item
         .attr("width",imgsize)
         .attr("height",imgsize)
         .attr("y",-0.5*imgsize);
 
+      d3.selectAll("text").filter(d => item.datum().data.name == d.data.name).attr("visibility","hidden");
+
     })
 
 
 
-/*
+
   node.append("text")
-    .attr("dy", 3)
-    .attr("x", function(d) { return d.children ? -8 : 8; })
+    .attr("dy", -0.5*imgsizeBig)
+    .attr("x", function(d) { return d.children ? -8 : 8 + (0.25*imgsizeBig); })
     .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
     .text(function(d) {
-      return !d.children ? d.data.name : ""; });
-  */
-
+      return !d.children ? d.data.name + ":" + d.data.string : ""; })
+    .attr("visibility","hidden");
   });
 
 </script>
