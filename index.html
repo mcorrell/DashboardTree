@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Dashboard Clusters</title>
+<style>
+
+.node circle {
+  fill: #999;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.node--internal circle {
+  fill: #555;
+}
+
+.node--internal text {
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke: #555;
+  stroke-opacity: 0.4;
+  stroke-width: 1.5px;
+}
+
+</style>
+<svg width="2000" height="1500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+//Hierarchical Clustering
+var hCluster = function(data){
+    // a hierarchical cluster is a root object with a "name" and an array of "children"
+  var matrix = makeDistMatrix(data);
+  var root;
+  var node;
+  var clusName;
+  var closest;
+  // while we've still got data points to add:
+  // find the closest two points/clusters i,j
+  // create a cluster of those two points
+  // remove i and j from the matrix
+  // add entry for new cluster to the matrix
+
+  //n^3, but who cases.
+
+  while(matrix.length>1){
+    closest = findClosest(matrix);
+    matrix = addCluster(matrix,closest.i,closest.j);
+  }
+  return matrix[0].node;
+};
+
+var hamming = function(a,b){
+  var cA = a.split('');
+  var cB = b.split('');
+  var dist = 0;
+  for(var i = 0;i<cA.length;i++){
+      dist += cA[i]!=cB[i];
+  }
+  return dist + Math.abs(cA.length - cB.length);
+};
+
+var makeDistMatrix = function(data){
+  //create initial distance matrix
+  var matrix = [];
+  for(var i = 0;i<data.length;i++){
+    matrix.push([]);
+    matrix[i].node = {"name": data[i].DB, "children": null};
+    for(var j=0;j<data.length;j++){
+      matrix[i][j] = hamming(data[i].String,data[j].String);
+    }
+  }
+  return matrix;
+};
+
+var findClosest = function(distMatrix){
+  //find two closest points in a distance matrix
+  var minI = 0
+  var minJ = 0;
+  var minVal = -1;
+  for(var i = 0;i<distMatrix.length;i++){
+    for(var j = 0;j<distMatrix[i].length;j++){
+      if(i!=j && (minVal==-1 || distMatrix[i][j]<minVal)){
+        minI = i;
+        minJ = j;
+        minVal = distMatrix[i][j];
+      }
+    }
+  }
+  return {"i": minI, "j": minJ, "d": minVal};
+}
+
+var addCluster = function(distMatrix,i,j){
+  //remove the entries for i and j and replace with a cluster ij.
+  //add entry to the matrix that's min( d(x,i), d(x,j) )
+
+  if(i>j){
+    var t = i;
+    i = j;
+    j = t;
+  }
+
+  var newClust = [];
+  var dist;
+  var clusName = distMatrix[i].node.name + distMatrix[j].node.name;
+  newClust.node = {"name": clusName, "children": [distMatrix[i].node, distMatrix[j].node]};
+  for(var k = 0;k < distMatrix.length;k++){
+    dist = Math.min(distMatrix[k][i],distMatrix[k][j])
+    distMatrix[k].push(dist);
+    newClust.push(dist);
+    distMatrix[k].splice(j,1);
+    distMatrix[k].splice(i,1);
+  }
+
+  newClust.push(0);
+  newClust.splice(j,1);
+  newClust.splice(i,1);
+
+  distMatrix.push(newClust);
+  distMatrix.splice(j,1);
+  distMatrix.splice(i,1);
+
+  return distMatrix;
+}
+//D3 Tree Layout, from our boy MB https://bl.ocks.org/mbostock/4339184
+
+var theTree;
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    g = svg.append("g").attr("transform", "translate(40,0)");
+
+var tree = d3.tree()
+      .size([height, width - 160]);
+
+d3.csv("data.csv", function(error, data) {
+  if (error) throw error;
+
+  theTree = hCluster(data);
+
+  var root = tree(d3.hierarchy(theTree));
+
+  root
+    .sum(function(d) { return d.value; })
+    .sort(function(a, b) { return b.height - a.height || a.data.name.localeCompare(b.data.name); });
+
+  var link = g.selectAll(".link")
+    .data(tree(root).links())
+    .enter().append("path")
+      .attr("class", "link")
+      .attr("d", d3.linkHorizontal()
+          .x(function(d) { return d.y; })
+          .y(function(d) { return d.x; }));
+
+  var node = g.selectAll(".node")
+      .data(root.descendants())
+      .enter().append("g")
+      .attr("class", function(d) { return "node" + (d.children ? " node--internal" : " node--leaf"); })
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  node.append("circle")
+    .attr("r", 2.5);
+
+
+//iffn ya want images
+  var imgsize = 25;
+  var imgsizeBig = 200;
+
+  node.filter(function(d){ return !d.children;}).append("image")
+    .attr("xlink:href", function(d){
+      return "images/"+d.data.name+".jpg";
+    })
+    .attr("width", imgsize)
+    .attr("height", imgsize)
+    .attr("x",8)
+    .attr("y",-0.5*imgsize)
+    .on("mouseover",function(d){
+      d3.select(this)
+        .attr("width",imgsizeBig)
+        .attr("height",imgsizeBig)
+        .attr("y",-0.5*imgsizeBig);
+    })
+    .on("mouseout",function(d){
+      d3.select(this)
+        .attr("width",imgsize)
+        .attr("height",imgsize)
+        .attr("y",-0.5*imgsize);
+
+    })
+
+
+
+/*
+  node.append("text")
+    .attr("dy", 3)
+    .attr("x", function(d) { return d.children ? -8 : 8; })
+    .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+    .text(function(d) {
+      return !d.children ? d.data.name : ""; });
+  */
+
+  });
+
+</script>
