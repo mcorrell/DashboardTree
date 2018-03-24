@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Dashboard Clusters (Matrix)</title>
+<style>
+
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="lib/science.v1.js"></script>
+<script src="lib/reorder.v1.js"></script>
+<script>
+
+let margin = { top: 100, right: 250, bottom: 10, left: 80 };
+let width = 700;
+let height = 1100;
+
+let x = d3.scaleBand().rangeRound([0, width]);
+let y = d3.scaleBand().rangeRound([0, height]);
+let z = d3.scaleLinear().domain([0, 4]).clamp(true);
+let c = d3.scaleOrdinal(d3.schemeCategory10);
+
+let svg = d3.select('body').append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+d3.csv("data.csv", loadCSV);
+
+let theMeaning = [
+  { name: "Strategic" },
+  { name: "Tactical" },
+  { name: "Operational" },
+  { name: "Learning" },
+  { name: "Audience", values: { I: "Individual", O: "Org", S: "Social", P: "General Public" } },
+  { name: "Vis Literacy", values: { L: "Low", M: "Medium", H: "High" } },
+  { name: "Domain Knowledge" },
+  { name: "Constructability" },
+  { name: "Interactivity" },
+  { name: "Modify Data/World" },
+  { name: "Alerting" },
+  { name: "Benchmarks" },
+  { name: "Multipage" },
+  { name: "Updatable" },
+  { name: "Highlighting" },
+];
+let defaultValues = { Y: "Yes", N: "No" };
+
+function loadCSV(error, data) {
+    console.log(data);
+
+    let json = {};
+    json.rowLabels = data.map(d => d.DB);
+    json.colLabels = theMeaning.map(d => d.name);
+    json.matrix = data.map(d => d.String.split(""));
+
+    table(json);
+
+    let sorts = [
+        {
+            name: 'original',
+            order: function() {
+                table.order(
+                    reorder.permutation(json.matrix.length),
+                    reorder.permutation(json.matrix[0].length)
+                )
+            }
+        },
+        {
+            name: 'optimal leaf',
+            order: function() {
+                let matrix = json.matrix;
+                let transpose = reorder.transpose(matrix);
+                let distFunc = reorder.dist();
+                distFunc.distance(science.stats.distance.hamming);
+                let distRows = distFunc(matrix);
+                let distCols = distFunc(transpose);
+                
+                let order = reorder.optimal_leaf_order()
+                    .distance(science.stats.distance.manhattan);
+                let rowPerm = order.distanceMatrix(distRows)(matrix);
+                let colPerm = order.distanceMatrix(distCols)(transpose);
+
+                table.order(rowPerm, colPerm);
+                return {rows: rowPerm, cols: colPerm};
+            }
+        }
+    ];
+
+    let sortDrop = d3.select('body').insert('select', 'svg');
+    sortDrop.selectAll('option')
+        .data(sorts, d => d.name)
+        .enter().append('option')
+            .attr('value', d => d.name)
+            .text(d => d.name);
+
+    sortDrop.on('change', () => {
+        let chosenMethod = d3.event.target.value;
+        sorts.find(d => d.name === chosenMethod).order();
+    });
+
+    d3.select('body').insert('br', 'svg');
+
+    let imgsize = 250;
+    let detailView = d3.select('body').append('div');
+    d3.selectAll('.row').on('mouseover', function() {
+        let thisNode = d3.select(this);
+        let db = thisNode.select('.db').text();
+        let imgGrp = svg.selectAll('.picture').data([db], d => d);
+        imgGrp.exit().remove();
+        let grpEnter = imgGrp.enter().append('g')
+            .attr('transform', `translate(${width}, ${margin.top})`)
+            .attr('class', 'picture');
+
+        let image = grpEnter.append('image')
+            .attr("width", imgsize)
+            .attr("height", imgsize);
+
+        let text = grpEnter.append('text')
+            .attr('dy', '-0.66em')
+            .text(db);
+        
+        imgGrp.merge(grpEnter)
+            .select('image')
+            .attr("xlink:href", function(d){
+                return "images/"+d+".jpg";
+            });
+
+        imgGrp.merge(grpEnter)
+            .select('text')
+            .text(db);
+
+    });
+}
+
+function table(json) { 
+    let matrix = json.matrix;
+    let rowLabels = json.rowLabels;
+    let colLabels = json.colLabels;
+    
+    let n = matrix.length;
+    let m = matrix[0].length;
+
+    let rowPerm = reorder.permutation(n);
+    let colPerm = reorder.permutation(m);
+    let rowInv = reorder.inverse_permutation(rowPerm);
+    let colInv = reorder.inverse_permutation(colPerm);
+
+    x.domain(d3.range(0, m));
+    y.domain(d3.range(0, n));
+
+    let row = svg.selectAll('.row')
+        .data(matrix, (d, i) => `row${i}`)
+        .enter().append('g')
+            .attr('id', (d, i) => `row${i}`)
+            .attr('class', 'row')
+            .attr('transform', (d, i) => `translate(0,+${y(rowInv[i])})`);
+
+    let cell = row.selectAll('.cell')
+        .data(d => d)
+        .enter().append('g')
+            .attr('class', 'cell')
+            .attr('transform', (d,i) => `translate(${x(colInv[i])},0)`);
+    cell.append('rect')
+            .attr('width', x.bandwidth())
+            .attr('height', y.bandwidth())
+            .style('fill', d => c(d));
+
+    cell.append('text')
+        .attr('x', x.bandwidth() / 2)
+        .attr('y', y.bandwidth() / 2)
+        .attr('dy', '.33em')
+        .style('font-size',10)
+        .text(d => d);
+    
+    row.append('text')
+        .attr('class', 'db')
+        .attr('x', -6)
+        .attr('y', y.bandwidth() / 2)
+        .attr('dy', '.34em')
+        .attr('text-anchor', 'end')
+        .text((d, i) => rowLabels[i]);
+
+    let col = svg.selectAll('.col')
+        .data(matrix[0])
+        .enter().append('g')
+            .attr('id', (d, i) => `col${i}`)
+            .attr('class', 'col')
+            .attr('transform', (d, i) => `translate(${x(colInv[i])})rotate(-90)`)
+    
+    col.append('text')
+        .attr('x', 6)
+        .attr('y', y.bandwidth() / 2)
+        .attr('dy', '1.33em')
+        .attr('text-anchor', 'start')
+        .text((d, i) => colLabels[i]);
+
+    function order(rows, cols) {
+        rowPerm = rows;
+        rowInv = reorder.inverse_permutation(rowPerm);
+        colPerm = cols;
+        colInv = reorder.inverse_permutation(colPerm);
+
+        let t = svg.transition().duration(1500);
+        t.selectAll('.row')
+            .attr('transform', (d, i) => `translate(0,${y(rowInv[i])})`)
+            .selectAll('.cell')
+                .attr('transform', (d,i) => `translate(${x(colInv[i])},0)`);
+        t.selectAll('.col')
+            .attr('transform', (d,i) => `translate(${x(colInv[i])})rotate(-90)`);
+    }
+
+    table.order = order;
+}
+
+</script>
+</body>
