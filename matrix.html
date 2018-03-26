@@ -44,17 +44,35 @@ let theMeaning = [
   { name: "Updatable" },
   { name: "Highlighting" },
 ];
-let defaultValues = { Y: "Yes", N: "No" };
+let defaultValues = { N: "No", Y: "Yes" };
+theMeaning.forEach(dim => {
+    if (!dim.hasOwnProperty('values'))
+        dim.values = defaultValues;
+    
+});
 
+let json = {};
+let currentOrdering = {};
 function loadCSV(error, data) {
     console.log(data);
 
-    let json = {};
     json.rowLabels = data.map(d => d.DB);
     json.colLabels = theMeaning.map(d => d.name);
     json.matrix = data.map(d => d.String.split(""));
 
     table(json);
+
+    let matrix = json.matrix
+
+    // try converting letters to scalar numbers in the range [0, 1]  (N = 0, Y = 1; similar for L M H [0, .5, 1])
+    let matrixByNum = json.matrixByNum = matrix.map(dims => dims.map((dim, i) => {
+        let possibleValues = Object.keys(theMeaning[i].values);
+        let numVals = possibleValues.length;
+        let distScale = d3.scaleOrdinal()
+            .range(d3.range(0, numVals / (numVals-1), 1 / (numVals-1)))
+            .domain(possibleValues);
+        return distScale(dim);
+    }));
 
     let sorts = [
         {
@@ -67,9 +85,8 @@ function loadCSV(error, data) {
             }
         },
         {
-            name: 'optimal leaf',
+            name: 'optimal leaf (hamming)',
             order: function() {
-                let matrix = json.matrix;
                 let transpose = reorder.transpose(matrix);
                 let distFunc = reorder.dist();
                 distFunc.distance(science.stats.distance.hamming);
@@ -79,6 +96,21 @@ function loadCSV(error, data) {
                 let order = reorder.optimal_leaf_order()
                     .distance(science.stats.distance.manhattan);
                 let rowPerm = order.distanceMatrix(distRows)(matrix);
+                let colPerm = order.distanceMatrix(distCols)(transpose);
+
+                table.order(rowPerm, colPerm);
+                return {rows: rowPerm, cols: colPerm};
+            }
+        },
+        {
+            name: 'optimal leaf (scalar)',
+            order: function() {
+                let transpose = reorder.transpose(matrixByNum);
+                let distRows = reorder.dist()(matrixByNum);
+                let distCols = reorder.dist()(transpose);
+
+                let order = reorder.optimal_leaf_order();
+                let rowPerm = order.distanceMatrix(distRows)(matrixByNum);
                 let colPerm = order.distanceMatrix(distCols)(transpose);
 
                 table.order(rowPerm, colPerm);
@@ -96,7 +128,7 @@ function loadCSV(error, data) {
 
     sortDrop.on('change', () => {
         let chosenMethod = d3.event.target.value;
-        sorts.find(d => d.name === chosenMethod).order();
+        currentOrdering = sorts.find(d => d.name === chosenMethod).order();
     });
 
     d3.select('body').insert('br', 'svg');
