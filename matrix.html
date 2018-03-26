@@ -18,6 +18,7 @@ let x = d3.scaleBand().rangeRound([0, width]);
 let y = d3.scaleBand().rangeRound([0, height]);
 let z = d3.scaleLinear().domain([0, 4]).clamp(true);
 let c = d3.scaleOrdinal(d3.schemeCategory10);
+let clusterColors = d3.scaleOrdinal(d3.schemeCategory20b);
 
 let svg = d3.select('body').append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -59,6 +60,8 @@ function loadCSV(error, data) {
     json.rowLabels = data.map(d => d.DB);
     json.colLabels = theMeaning.map(d => d.name);
     json.matrix = data.map(d => d.String.split(""));
+    json.cluster = data.map(d => d.Cluster);
+    json.clusterNames = data.map(d => d.ClusterName);
 
     table(json);
 
@@ -171,6 +174,8 @@ function table(json) {
     let matrix = json.matrix;
     let rowLabels = json.rowLabels;
     let colLabels = json.colLabels;
+    let cluster = json.cluster;
+    let clusterNames = json.clusterNames;
     
     let n = matrix.length;
     let m = matrix[0].length;
@@ -180,8 +185,8 @@ function table(json) {
     let rowInv = reorder.inverse_permutation(rowPerm);
     let colInv = reorder.inverse_permutation(colPerm);
 
-    x.domain(d3.range(0, m));
-    y.domain(d3.range(0, n));
+    x.domain(d3.range(0, m+1));
+    y.domain(d3.range(0, n+1));
 
     let row = svg.selectAll('.row')
         .data(matrix, (d, i) => `row${i}`)
@@ -206,6 +211,21 @@ function table(json) {
         .attr('dy', '.33em')
         .style('font-size',10)
         .text(d => d);
+
+    let clusterCell = row.append('g')
+        .attr('transform', `translate(${x(m)})`);
+
+    clusterCell.append('rect')
+        .attr('width', x.bandwidth())
+        .attr('height', y.bandwidth())
+        .style('fill', (d,i) => clusterColors(cluster[i]));
+
+    clusterCell.append('text')
+        // .attr('x', x.bandwidth() / 2)
+        .attr('y', y.bandwidth() / 2)
+        .attr('dy', '.33em')
+        .style('font-size',9)
+        .text((d,i) => clusterNames[i].split(':')[1]);
     
     row.append('text')
         .attr('class', 'db')
