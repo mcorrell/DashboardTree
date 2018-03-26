@@ -10,7 +10,7 @@
 <script src="lib/reorder.v1.js"></script>
 <script>
 
-let margin = { top: 100, right: 250, bottom: 10, left: 80 };
+let margin = { top: 100, right: 250, bottom: 250, left: 80 };
 let width = 700;
 let height = 1100;
 
@@ -78,10 +78,10 @@ function loadCSV(error, data) {
         {
             name: 'original',
             order: function() {
-                table.order(
-                    reorder.permutation(json.matrix.length),
-                    reorder.permutation(json.matrix[0].length)
-                )
+                let rowPerm = reorder.permutation(matrix.length);
+                let colPerm = reorder.permutation(matrix[0].length);
+                table.order(rowPerm, colPerm);
+                return {rows: rowPerm, cols: colPerm};
             }
         },
         {
@@ -138,10 +138,10 @@ function loadCSV(error, data) {
     d3.selectAll('.row').on('mouseover', function() {
         let thisNode = d3.select(this);
         let db = thisNode.select('.db').text();
+        let yCoord = Math.max(0, Math.min(height, this.getClientRects()[0].y)) - margin.top + window.scrollY;
         let imgGrp = svg.selectAll('.picture').data([db], d => d);
         imgGrp.exit().remove();
         let grpEnter = imgGrp.enter().append('g')
-            .attr('transform', `translate(${width}, ${margin.top})`)
             .attr('class', 'picture');
 
         let image = grpEnter.append('image')
@@ -151,6 +151,9 @@ function loadCSV(error, data) {
         let text = grpEnter.append('text')
             .attr('dy', '-0.66em')
             .text(db);
+
+        imgGrp.merge(grpEnter)
+            .attr('transform', `translate(${width}, ${yCoord})`);
         
         imgGrp.merge(grpEnter)
             .select('image')
@@ -161,7 +164,6 @@ function loadCSV(error, data) {
         imgGrp.merge(grpEnter)
             .select('text')
             .text(db);
-
     });
 }
 
