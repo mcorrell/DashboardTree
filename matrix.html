@@ -18,7 +18,13 @@ let x = d3.scaleBand().rangeRound([0, width]);
 let y = d3.scaleBand().rangeRound([0, height]);
 let z = d3.scaleLinear().domain([0, 4]).clamp(true);
 let c = d3.scaleOrdinal(d3.schemeCategory10);
-let clusterColors = d3.scaleOrdinal(d3.schemeCategory20b);
+let clusterColors = d3.scaleOrdinal().domain([1,2,3,4,5,6,7]).range(["#c55d93",
+"#58a865",
+"#a361c7",
+"#9b9c3b",
+"#648ace",
+"#c97f3e",
+"#cb5352"]);
 
 let svg = d3.select('body').append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -49,7 +55,7 @@ let defaultValues = { N: "No", Y: "Yes" };
 theMeaning.forEach(dim => {
     if (!dim.hasOwnProperty('values'))
         dim.values = defaultValues;
-    
+
 });
 
 let json = {};
@@ -95,7 +101,7 @@ function loadCSV(error, data) {
                 distFunc.distance(science.stats.distance.hamming);
                 let distRows = distFunc(matrix);
                 let distCols = distFunc(transpose);
-                
+
                 let order = reorder.optimal_leaf_order()
                     .distance(science.stats.distance.manhattan);
                 let rowPerm = order.distanceMatrix(distRows)(matrix);
@@ -157,7 +163,7 @@ function loadCSV(error, data) {
 
         imgGrp.merge(grpEnter)
             .attr('transform', `translate(${width}, ${yCoord})`);
-        
+
         imgGrp.merge(grpEnter)
             .select('image')
             .attr("xlink:href", function(d){
@@ -170,13 +176,13 @@ function loadCSV(error, data) {
     });
 }
 
-function table(json) { 
+function table(json) {
     let matrix = json.matrix;
     let rowLabels = json.rowLabels;
     let colLabels = json.colLabels;
     let cluster = json.cluster;
     let clusterNames = json.clusterNames;
-    
+
     let n = matrix.length;
     let m = matrix[0].length;
 
@@ -226,7 +232,7 @@ function table(json) {
         .attr('dy', '.33em')
         .style('font-size',9)
         .text((d,i) => clusterNames[i].split(':')[1]);
-    
+
     row.append('text')
         .attr('class', 'db')
         .attr('x', -6)
@@ -241,7 +247,7 @@ function table(json) {
             .attr('id', (d, i) => `col${i}`)
             .attr('class', 'col')
             .attr('transform', (d, i) => `translate(${x(colInv[i])})rotate(-90)`)
-    
+
     col.append('text')
         .attr('x', 6)
         .attr('y', y.bandwidth() / 2)

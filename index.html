@@ -4,7 +4,6 @@
 <style>
 
 .node circle {
-  fill: #999;
 }
 
 .node text {
@@ -30,6 +29,15 @@
 <svg width="2000" height="1500"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+
+var clusterColor = d3.scaleOrdinal().domain([1,2,3,4,5,6,7]).range(["#c55d93",
+"#58a865",
+"#a361c7",
+"#9b9c3b",
+"#648ace",
+"#c97f3e",
+"#cb5352"]);
+
 //Hierarchical Clustering
 var hCluster = function(data){
     // a hierarchical cluster is a root object with a "name" and an array of "children"
@@ -68,7 +76,7 @@ var makeDistMatrix = function(data){
   var matrix = [];
   for(var i = 0;i<data.length;i++){
     matrix.push([]);
-    matrix[i].node = {"name": data[i].DB, "string": data[i].String, "children": null};
+    matrix[i].node = {"name": data[i].DB, "string": data[i].String, "cluster": data[i].Cluster, "children": null};
     for(var j=0;j<data.length;j++){
       matrix[i][j] = hamming(data[i].String,data[j].String);
     }
@@ -163,7 +171,11 @@ d3.csv("data.csv", function(error, data) {
       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
   node.append("circle")
-    .attr("r", 2.5);
+    .attr("r", 2.5)
+
+  node.selectAll("circle").filter(d => !d.children)
+    .attr("fill",d => clusterColor(d.data.cluster))
+    .attr("r",5);
 
 
 //iffn ya want images
