@@ -1,84 +1,84 @@
 DB,String,Cluster,ClusterName
-DB001,YYNNOMNNNNNYNYY,4,Cluster 4: Strategic Org?
-DB002,YYNNOLNNYNNNYYN,2,Cluster 2: Strategic
-DB003,NNNYPMYNYNNNYYN,6,Cluster 6: Visual Dashboards
-DB004,YNNYPMNNNNNNNYN,6,Cluster 6: Visual Dashboards
-DB005,YNNYPMNNYNNNNYY,6,Cluster 6: Visual Dashboards
-DB006,NNNYPMNNYNNNNYN,6,Cluster 6: Visual Dashboards
-DB007,NNNYPMNNYNNNYNY,6,Cluster 6: Visual Dashboards
-DB008,YYNNOMNNYNNNYYN,2,Cluster 2: Strategic
-DB009,NYNNPLNNYNNNNYN,6,Cluster 6: Visual Dashboards
-DB010,NNNYPHNNYNNNNNN,6,Cluster 6: Visual Dashboards
-DB011,YNNNOHYNYNNNYYN,2,Cluster 2: Strategic
-DB012,NNNYPHNNNNNNNYN,6,Cluster 6: Visual Dashboards
-DB013,NYYNSMNNYNNNNYN,1,Cluster 1: Operational+Tactic
-DB014,YNNYSLNNYNNNNYY,6,Cluster 6: Visual Dashboards
-DB017,NYYNIHNNYNYYYYN,1,Cluster 1: Operational+Tactic
-DB019,NNYNIMNYYNNNNYN,1,Cluster 1: Operational+Tactic
-DB020,NNYNILNNYNNYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB021,NYYNIHNNYYYNYYN,1,Cluster 1: Operational+Tactic
-DB022,YYYNIMNYYNYYYYN,2,Cluster 2: Strategic
-DB023,YYYNIMNNYNYNYYN,2,Cluster 2: Strategic
-DB024,YYNNILNNYYYYNYY,5,Cluster 5: Loose
-DB025,YYYNSMNYYNNYYYN,2,Cluster 2: Strategic
-DB026,NYYNOMNNYNNYNYN,1,Cluster 1: Operational+Tactic
-DB027,NYYNIMNNYNNYYYN,1,Cluster 1: Operational+Tactic
-DB028,YYYNSMNYYYNYYYN,2,Cluster 2: Strategic
-DB029,YYNNILNNYNNYYYY,5,Cluster 5: Loose
-DB030,YYYNIHYNYNYYYYN,2,Cluster 2: Strategic
-DB031,NYYNILNNYYYYYYN,1,Cluster 1: Operational+Tactic
-DB032,NYNNOLYYYNNNNYN,6,Cluster 6: Visual Dashboards
-DB034,NNYNOMYNNNNYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB036,NYYNOHYYYNYYYYY,1,Cluster 1: Operational+Tactic
-DB037,NNYNOMYNNNNYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB040,YNNYPMNNNNNYYYN,6,Cluster 6: Visual Dashboards
-DB041,YNNYPHNNNNNYYYN,6,Cluster 6: Visual Dashboards
-DB042,NYNYPHNNYNNYNYN,5,Cluster 5: Loose
-DB043,NYYNOLNNYNNYYYN,1,Cluster 1: Operational+Tactic
-DB044,YYYYPLNNNNNYNYN,5,Cluster 5: Loose
-DB045,NYNYSHYNNNNNNYN,6,Cluster 6: Visual Dashboards
-DB046,NYYNOMYYYNNYYYN,1,Cluster 1: Operational+Tactic
-DB047,YYNNOHYYYNNYYYN,2,Cluster 2: Strategic
-DB048,YNNYPHNNYNNNNYN,6,Cluster 6: Visual Dashboards
-DB049,NNYNILNNNNYNNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB050,NNYNOHYNYYYYYYN,1,Cluster 1: Operational+Tactic
-DB051,NYNNOHNYYNNYNYN,1,Cluster 1: Operational+Tactic
-DB052,YYNNOHYYYNNNYYN,2,Cluster 2: Strategic
-DB053,YYYNIMYNYNYYYYN,2,Cluster 2: Strategic
-DB054,YYNNILYNNNNNNYN,5,Cluster 5: Loose
-DB055,NYYNOLYNYNNYYYN,1,Cluster 1: Operational+Tactic
-DB057,NNYNOLYYYYNYNYN,1,Cluster 1: Operational+Tactic
-DB056,NNYNOLYYYNYYYYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB058,NNYNOHYYYNYYYYN,1,Cluster 1: Operational+Tactic
-DB059,NNYNOLNNNNYYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB060,NNYNOHYYYNNYYYN,1,Cluster 1: Operational+Tactic
-DB061,NNYNOLYNNNYYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB062,YYNNOHNNYNNYYYN,2,Cluster 2: Strategic
-DB063,NNYNIHNYNNNYNYN,5,Cluster 5: Loose
-DB064,YYYNOMNYYNNNYYN,2,Cluster 2: Strategic
-DB065,NYYNOLNYYNNYNYN,1,Cluster 1: Operational+Tactic
-DB066,YYYNOLNNNNNYNYN,5,Cluster 5: Loose
-DB100,NNYNOHYNYYNNNYN,5,Cluster 5: Loose
-DB101,NYNNOLNNNNNYNYY,4,Cluster 4: Strategic Org?
-DB102,NNYNOLYYNNNYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB103,NNYNPLYYYYNNYYY,7,Not In A Cluster
-DB104,NYYNIHNYYNYNYYN,1,Cluster 1: Operational+Tactic
-DB105,NNYNILNNNNYYNYN,3,"Cluster 3: ""Super Operational, Alerts"""
-DB106,NYNNILNNNNNYNYN,4,Cluster 4: Strategic Org?
-DB107,NYYNIHNNYNNYYYY,1,Cluster 1: Operational+Tactic
-DB108,YNNNOMNNNNNYNYN,4,Cluster 4: Strategic Org?
-DB109,NYYNOLYNNNNNNYN,4,Cluster 4: Strategic Org?
-DB110,YYNNOMYNYNNNNYN,2,Cluster 2: Strategic
-DB111,NYYNILNNNNNNNYN,4,Cluster 4: Strategic Org?
-DB112,NYYNIHNYYNNNNYN,1,Cluster 1: Operational+Tactic
-DB113,YNNNOMYNNNNNNYN,4,Cluster 4: Strategic Org?
-DB114,YNNNOMYNNNNNNYN,4,Cluster 4: Strategic Org?
-DB115,NYYNIHYNYNNNYYN,5,Cluster 5: Loose
-DB116,NNYNSHNNNNNNNNN,7,Not In A Cluster
-DB117,YNNYPMNNNNNNNYN,6,Cluster 6: Visual Dashboards
-DB118,YYNNPLNNYNNYYYN,2,Cluster 2: Strategic
-DB119,NYYNIMNYYNNYYYN,1,Cluster 1: Operational+Tactic
-DB120,NYNNIMNNNNNYNYN,4,Cluster 4: Strategic Org?
-DB121,YYYYPMNNYNNNYYY,5,Cluster 5: Loose
-DB122,NNYNPHNYYNNNYYY,7,Not In A Cluster
-DB123,NYNNPMNNYNNNNYN,6,Cluster 6: Visual Dashboards
+DB001,YYNNOMNNNNNYNYY,4,Static organizational
+DB002,YYNNOLNNYNNNYYN,1,Strategic decision-making
+DB003,NNNYPMYNYNNNYYN,6,Communication
+DB004,YNNYPMNNNNNNNYN,6,Communication
+DB005,YNNYPMNNYNNNNYY,6,Communication
+DB006,NNNYPMNNYNNNNYN,6,Communication
+DB007,NNNYPMNNYNNNYNY,7,Dashboards++
+DB008,YYNNOMNNYNNNYYN,1,Strategic decision-making
+DB009,NYNNPLNNYNNNNYN,6,Communication
+DB010,NNNYPHNNYNNNNNN,6,Communication
+DB011,YNNNOHYNYNNNYYN,1,Strategic decision-making
+DB012,NNNYPHNNNNNNNYN,6,Communication
+DB013,NYYNSMNNYNNNNYN,5,Operational decision-making
+DB014,YNNYSLNNYNNNNYY,6,Communication
+DB017,NYYNIHNNYNYYYYN,2,Quantified Self
+DB019,NNYNIMNYYNNNNYN,2,Quantified Self
+DB020,NNYNILNNYNNYNYN,3,Static operational
+DB021,NYYNIHNNYYYNYYN,2,Quantified Self
+DB022,YYYNIMNYYNYYYYN,1,Strategic decision-making
+DB023,YYYNIMNNYNYNYYN,1,Strategic decision-making
+DB024,YYNNILNNYYYYNYY,7,Dashboards++
+DB025,YYYNSMNYYNNYYYN,1,Strategic decision-making
+DB026,NYYNOMNNYNNYNYN,5,Operational decision-making
+DB027,NYYNIMNNYNNYYYN,5,Operational decision-making
+DB028,YYYNSMNYYYNYYYN,1,Strategic decision-making
+DB029,YYNNILNNYNNYYYY,1,Strategic decision-making
+DB030,YYYNIHYNYNYYYYN,1,Strategic decision-making
+DB031,NYYNILNNYYYYYYN,2,Quantified Self
+DB032,NYNNOLYYYNNNNYN,7,Dashboards++
+DB034,NNYNOMYNNNNYNYN,3,Static operational
+DB036,NYYNOHYYYNYYYYY,5,Operational decision-making
+DB037,NNYNOMYNNNNYNYN,3,Static operational
+DB040,YNNYPMNNNNNYYYN,6,Communication
+DB041,YNNYPHNNNNNYYYN,6,Communication
+DB042,NYNYPHNNYNNYNYN,7,Dashboards++
+DB043,NYYNOLNNYNNYYYN,5,Operational decision-making
+DB044,YYYYPLNNNNNYNYN,7,Dashboards++
+DB045,NYNYSHYNNNNNNYN,7,Dashboards++
+DB046,NYYNOMYYYNNYYYN,5,Operational decision-making
+DB047,YYNNOHYYYNNYYYN,1,Strategic decision-making
+DB048,YNNYPHNNYNNNNYN,6,Communication
+DB049,NNYNILNNNNYNNYN,3,Static operational
+DB050,NNYNOHYNYYYYYYN,5,Operational decision-making
+DB051,NYNNOHNYYNNYNYN,5,Operational decision-making
+DB052,YYNNOHYYYNNNYYN,1,Strategic decision-making
+DB053,YYYNIMYNYNYYYYN,1,Strategic decision-making
+DB054,YYNNILYNNNNNNYN,7,Dashboards++
+DB055,NYYNOLYNYNNYYYN,5,Operational decision-making
+DB056,NNYNOLYYYNYYYYN,5,Operational decision-making
+DB057,NNYNOLYYYYNYNYN,3,Static operational
+DB058,NNYNOHYYYNYYYYN,5,Operational decision-making
+DB059,NNYNOLNNNNYYNYN,3,Static operational
+DB060,NNYNOHYYYNNYYYN,5,Operational decision-making
+DB061,NNYNOLYNNNYYNYN,3,Static operational
+DB062,YYNNOHNNYNNYYYN,1,Strategic decision-making
+DB063,NNYNIHNYNNNYNYN,7,Dashboards++
+DB064,YYYNOMNYYNNNYYN,1,Strategic decision-making
+DB065,NYYNOLNYYNNYNYN,5,Operational decision-making
+DB066,YYYNOLNNNNNYNYN,7,Dashboards++
+DB100,NNYNOHYNYYNNNYN,7,Dashboards++
+DB101,NYNNOLNNNNNYNYY,4,Static organizational
+DB102,NNYNOLYYNNNYNYN,3,Static operational
+DB103,NNYNPLYYYYNNYYY,7,Dashboards++
+DB104,NYYNIHNYYNYNYYN,2,Quantified Self
+DB105,NNYNILNNNNYYNYN,3,Static operational
+DB106,NYNNILNNNNNYNYN,4,Static organizational
+DB107,NYYNIHNNYNNYYYY,2,Quantified Self
+DB108,YNNNOMNNNNNYNYN,4,Static organizational
+DB109,NYYNOLYNNNNNNYN,3,Static operational
+DB110,YYNNOMYNYNNNNYN,1,Strategic decision-making
+DB111,NYYNILNNNNNNNYN,4,Static organizational
+DB112,NYYNIHNYYNNNNYN,2,Quantified Self
+DB113,YNNNOMYNNNNNNYN,4,Static organizational
+DB114,YNNNOMYNNNNNNYN,4,Static organizational
+DB115,NYYNIHYNYNNNYYN,7,Dashboards++
+DB116,NNYNSHNNNNNNNNN,7,Dashboards++
+DB117,YNNYPMNNNNNNNYN,6,Communication
+DB118,YYNNPLNNYNNYYYN,1,Strategic decision-making
+DB119,NYYNIMNYYNNYYYN,5,Operational decision-making
+DB120,NYNNIMNNNNNYNYN,4,Static organizational
+DB121,YYYYPMNNYNNNYYY,7,Dashboards++
+DB122,NNYNPHNYYNNNYYY,7,Dashboards++
+DB123,NYNNPMNNYNNNNYN,6,Communication
